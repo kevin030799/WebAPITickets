@@ -1,0 +1,36 @@
+﻿@model IEnumerable<TicketViewModel>
+@{
+    ViewBag.Title = "Mis Tickets";
+}
+
+<h2>Listado de Tickets</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Consecutivo</th>
+            <th>Asunto</th>
+            <th>Estado</th>
+            <th>Urgencia</th>
+            <th>Importancia</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ticket in Model)
+        {
+            <tr>
+                <td>@ticket.Id</td>
+                <td>@ticket.Asunto</td>
+                <td>@ticket.Estado</td>
+                <td>@ticket.Urgencia</td>
+                <td>@ticket.Importancia</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@ticket.Id">Ver</a> |
+                    <a asp-action="Edit" asp-route-id="@ticket.Id">Editar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+}
