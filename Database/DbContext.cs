@@ -1,31 +1,46 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebAPITickets.Models;
 
-namespace WebAPITickets.Database
+namespace SoporteApp.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class AppDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-        public DbSet<User> Users { get; set; }
-        public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Roles> Roles { get; set; }
+        public DbSet<Categoria> Categorias { get; set; }
+        public DbSet<Urgencia> Urgencias { get; set; }
+        public DbSet<Importancia> Importancias { get; set; }
+        public DbSet<Tiquete> Tiquetes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Usuario>()
+                .HasOne<Roles>()
+                .WithMany()
+                .HasForeignKey(u => u.us_ro_identificador);
 
-            modelBuilder.Entity<Ticket>()
-                .HasOne(t => t.Creador)
-                .WithMany(u => u.TicketsCreados)
-                .HasForeignKey(t => t.CreadorId)
-                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Tiquete>()
+                .HasOne<Usuario>()
+                .WithMany()
+                .HasForeignKey(t => t.ti_us_identificador);
 
-            modelBuilder.Entity<Ticket>()
-                .HasOne(t => t.AsignadoA)
-                .WithMany(u => u.TicketsAsignados)
-                .HasForeignKey(t => t.AsignadoAId)
-                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Tiquete>()
+                .HasOne<Categoria>()
+                .WithMany()
+                .HasForeignKey(t => t.ti_ca_identificador);
+
+            modelBuilder.Entity<Tiquete>()
+                .HasOne<Urgencia>()
+                .WithMany()
+                .HasForeignKey(t => t.ti_ur_identificador);
+
+            modelBuilder.Entity<Tiquete>()
+                .HasOne<Importancia>()
+                .WithMany()
+                .HasForeignKey(t => t.ti_im_identificador);
         }
     }
-
 }
+

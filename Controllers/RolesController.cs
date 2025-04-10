@@ -28,9 +28,9 @@ namespace WebAPITickets.Controllers
         
         // GET: api/Tickets/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Ticket>> GetTicket(int id)
+        public async Task<ActionResult<Tiquete>> GetTicket(int id)
         {
-            var ticket = await _context.Tickets.FindAsync(id);
+            var ticket = await _contexto.Ticket.FindAsync(id);
 
             if (ticket == null)
             {
